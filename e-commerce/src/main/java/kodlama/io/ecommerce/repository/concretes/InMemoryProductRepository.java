@@ -13,11 +13,11 @@ public class InMemoryProductRepository implements ProductRepository {
 
     public InMemoryProductRepository() {
         products=new ArrayList<>();
-        products.add(new Product(1,"dasdada",1,120,"dflsdkfjsdfjl"));
-        products.add(new Product(2,"dasdada",1,120,"dflsdkfjsdfjl"));
-        products.add(new Product(3,"dasdada",1,120,"dflsdkfjsdfjl"));
-        products.add(new Product(4,"dasdada",1,120,"dflsdkfjsdfjl"));
-        products.add(new Product(5,"dasdada",1,120,"dflsdkfjsdfjl"));
+        products.add(new Product(1,"Iphone14",1,120,"dflsdkfjsdfjl"));
+        products.add(new Product(2,"ps5",1,120,"dflsdkfjsdfjl"));
+        products.add(new Product(3,"xbox",1,120,"dflsdkfjsdfjl"));
+        products.add(new Product(4,"ıpad mini",1,120,"dflsdkfjsdfjl"));
+        products.add(new Product(5,"Dyson v15",1,120,"dflsdkfjsdfjl"));
     }
 
     @Override
@@ -46,11 +46,22 @@ public class InMemoryProductRepository implements ProductRepository {
                 break;
             }
         }
+        //products.set()ile de istediğimizi güncelleyebiliriz ancak önce istenilen productın indexini bulmak lazım
     }
 
     @Override
     public List<Product> getList() {
         return products;
+    }
+
+    @Override
+    public Product getById(int id) {
+        for (Product product : products) {
+            if(product.getId()==id){
+                return product;
+            }
+        }
+        return  null;
     }
 
 

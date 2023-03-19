@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class ProductManager implements ProductService {
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductManager(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -17,13 +17,10 @@ public class ProductManager implements ProductService {
 
     @Override
     public void add(Product product) {
-        boolean result=check(product);
-        if(result){
+
+            validateProduct(product);
             productRepository.add(product);
-        }
-        else{
-            System.err.println("Bilgilerin kurallara uygun olduğuna emin olunuz");
-        }
+
 
     }
 
@@ -34,12 +31,9 @@ public class ProductManager implements ProductService {
 
     @Override
     public void update(int id, Product product) {
-        if(check(product)){
-            productRepository.update(id,product);
-        }
-        else{
-            System.err.println("Bilgilerin kurallara uygun olduğuna emin olunuz");
-        }
+        validateProduct(product);
+        productRepository.update(id, product);
+
     }
 
     @Override
@@ -49,20 +43,32 @@ public class ProductManager implements ProductService {
 
     @Override
     public Product getProductById(int id) {
-        List<Product> products=this.productRepository.getList();
-        for (Product product : products) {
-            if(product.getId()==id){
-                return product;
-            }
-        }
-        throw new RuntimeException("aranan ürün bulunamadı");
+        return productRepository.getById(id);
     }
-    public boolean check(Product product){
-        //
-        if(product.getPrice()<= 0 &&  product.getQuantity()<= 0 && (product.getDescription().length()<10 || product.getDescription().length()>50)){
 
-            return false;
-        }
-       return true;
+
+    // *** Product iş kurallarını yazıdığımız metotlar ***
+    // her if için ne hatası döndüğünü kapsamlı verir
+    // her iş için tek tek ayrı methotlar da kullanılır
+    private boolean validateProduct(Product product) {
+        checkIfPriceValid(product);
+        checkIfQuantityValid(product);
+        checkIfDescriptionLength(product);
+
+        return true;
     }
+
+    private void checkIfDescriptionLength(Product product) {
+        if (product.getDescription().length() < 10 || product.getDescription().length() > 50)
+            throw new IllegalArgumentException("Açıklama kısmını dikkatli yaz ");
+    }
+
+    private void checkIfPriceValid(Product product) {
+        if (product.getPrice() <= 0) throw new IllegalArgumentException("fiyat 0dan küçük olamaz ");
+    }
+
+    private void checkIfQuantityValid(Product product) {
+        if (product.getQuantity() < 0) throw new IllegalArgumentException("Miktar 0dan küçük olamaz ");
+    }
+
 }

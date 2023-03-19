@@ -38,6 +38,7 @@ Swagger bağımlılığı için pom.xml'e ekleyiniz.
 
 @SpringBootApplication
 public class ECommerceApplication {
+	//200: ok->request başarılı,500:->request başarısız,201:created,204:->delete sonrasında gözüküyor
 
 	public static void main(String[] args) {
 		SpringApplication.run(ECommerceApplication.class, args);

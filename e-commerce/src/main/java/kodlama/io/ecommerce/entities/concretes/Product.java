@@ -9,7 +9,7 @@ public class Product {
     private String description;
 
     public Product() {
-    }
+    }//No args constructor
 
     public Product(int id, String name, int quantity, int price, String description) {
         this.id = id;
@@ -17,7 +17,7 @@ public class Product {
         this.quantity = quantity;
         this.price = price;
         this.description = description;
-    }
+    }// all args constructor
 
     public int getId() {
         return id;
