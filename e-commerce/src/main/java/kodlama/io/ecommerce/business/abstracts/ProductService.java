@@ -1,6 +1,6 @@
 package kodlama.io.ecommerce.business.abstracts;
 
-import kodlama.io.ecommerce.entities.concretes.Product;
+import kodlama.io.ecommerce.entities.Product;
 
 import java.util.List;
 

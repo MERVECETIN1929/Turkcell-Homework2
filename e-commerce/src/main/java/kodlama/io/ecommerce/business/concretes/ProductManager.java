@@ -1,8 +1,8 @@
 package kodlama.io.ecommerce.business.concretes;
 
 import kodlama.io.ecommerce.business.abstracts.ProductService;
-import kodlama.io.ecommerce.entities.concretes.Product;
-import kodlama.io.ecommerce.repository.abstracts.ProductRepository;
+import kodlama.io.ecommerce.entities.Product;
+import kodlama.io.ecommerce.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,31 +19,32 @@ public class ProductManager implements ProductService {
     public void add(Product product) {
 
             validateProduct(product);
-            productRepository.add(product);
+            productRepository.save(product);
 
 
     }
 
     @Override
     public void delete(int id) {
-        productRepository.delete(id);
+        productRepository.deleteById(id);
     }
 
     @Override
     public void update(int id, Product product) {
         validateProduct(product);
-        productRepository.update(id, product);
+        product.setId(id);
+        productRepository.save(product);
 
     }
 
     @Override
     public List<Product> getList() {
-        return productRepository.getList();
+        return productRepository.findAll();
     }
 
     @Override
     public Product getProductById(int id) {
-        return productRepository.getById(id);
+        return productRepository.findById(id).orElseThrow();
     }
 
 
