@@ -7,6 +7,7 @@ import kodlama.io.ecommerce.business.dto.response.create.CreateCategoryResponse;
 import kodlama.io.ecommerce.business.dto.response.get.GetAllCategoriesResponse;
 import kodlama.io.ecommerce.business.dto.response.get.GetCategoryResponse;
 import kodlama.io.ecommerce.business.dto.response.update.UpdateCategoryResponse;
+import kodlama.io.ecommerce.business.rules.CategoryBusinessRules;
 import kodlama.io.ecommerce.entities.Category;
 import kodlama.io.ecommerce.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CategoryManager implements CategoryService {
     private final CategoryRepository repository;
     private final ModelMapper mapper;
+    private final CategoryBusinessRules rules;
 
     @Override
     public List<GetAllCategoriesResponse> getAll() {
@@ -31,6 +33,7 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public GetCategoryResponse getById(int id) {
+        rules.checkExistsCategoryById(id);
         Category category = repository.findById(id).orElseThrow();
         GetCategoryResponse getCategoryResponse = mapper.map(category, GetCategoryResponse.class);
         return getCategoryResponse;
@@ -38,6 +41,7 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public CreateCategoryResponse add(CreateCategoryRequest request) {
+        rules.checkExistsCategoryByName(request.getName());
         Category category = mapper.map(request, Category.class);
         category.setId(0);
         repository.save(category);
@@ -47,6 +51,8 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public UpdateCategoryResponse update(int id, UpdateCategoryRequest request) {
+        rules.checkExistsCategoryById(id);
+        rules.checkExistsCategoryByName(request.getName());
         Category category = mapper.map(request, Category.class);
         category.setId(id);
         repository.save(category);
@@ -56,6 +62,7 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public void delete(int id) {
+        rules.checkExistsCategoryById(id);
         repository.deleteById(id);
     }
 }
