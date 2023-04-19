@@ -26,6 +26,9 @@ public class Product {
     @Column(name="description")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name="categoryId")
+    private Category category;
 
 
 }

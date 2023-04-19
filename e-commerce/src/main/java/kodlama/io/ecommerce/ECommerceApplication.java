@@ -1,7 +1,11 @@
 package kodlama.io.ecommerce;
 
+import kodlama.io.ecommerce.core.exceptions.BusinessExceptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 /*Bir E-ticaret sistemi oluşturmak istiyoruz. Spring Boot 3.0.4, paket yöneticisi olarak Maven ve Java SDK olarak 17 veya daha üst bir versiyon kullanılacaktır.
 (Sadece Spring Web ve Swagger bağımlılığını eklemeniz yeterli olacaktır.)
 
@@ -35,13 +39,17 @@ Swagger bağımlılığı için pom.xml'e ekleyiniz.
     <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
     <version>2.0.4</version>
 </dependency>*/
-
+@RestControllerAdvice // rest controller dinleniyor demek
 @SpringBootApplication
 public class ECommerceApplication {
-	//200: ok->request başarılı,500:->request başarısız,201:created,204:->delete sonrasında gözüküyor
+    //200: ok->request başarılı,500:->request başarısız,201:created,204:->delete sonrasında gözüküyor
 
-	public static void main(String[] args) {
-		SpringApplication.run(ECommerceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ECommerceApplication.class, args);
+    }
 
+    @ExceptionHandler // hataları işle
+    public BusinessExceptions businessExceptions(String mesage) {
+        return new BusinessExceptions(mesage);
+    }
 }
